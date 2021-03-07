@@ -14,8 +14,6 @@ public class RecommendProductDemo {
 
     /**
      * 继续购买商品
-     * @param productId
-     * @param otherProductId
      */
     public void continuePurchase(long productId, long otherProductId) {
         jedis.zincrby("continue_purchase_products::" + productId, 1, String.valueOf(otherProductId));
@@ -23,8 +21,6 @@ public class RecommendProductDemo {
 
     /**
      * 推荐其他人购买过的其他商品
-     * @param productId
-     * @return
      */
     public Set<Tuple> getRecommendProducts(long productId) {
         return jedis.zrevrangeWithScores("continue_purchase_products::" + productId, 0, 2);

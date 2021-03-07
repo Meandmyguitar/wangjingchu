@@ -14,7 +14,6 @@ public class NewsDemo {
 
     /**
      * 加入一篇新闻
-     * @param newsId
      */
     public void addNews(long newsId, long timestamp) {
         jedis.zadd("news", timestamp, String.valueOf(newsId));
@@ -22,11 +21,6 @@ public class NewsDemo {
 
     /**
      * 搜索新闻
-     * @param maxTimestamp
-     * @param minTimestamp
-     * @param index
-     * @param count
-     * @return
      */
     public Set<Tuple> searchNews(long maxTimestamp, long minTimestamp, int index , int count) {
         return jedis.zrevrangeByScoreWithScores("news", maxTimestamp, minTimestamp, index, count);

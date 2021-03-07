@@ -3,7 +3,7 @@ package redis.hash;
 import redis.clients.jedis.Jedis;
 
 /**
- * 短网址追踪案例
+ * 短链接追踪案例
  */
 public class ShortUrlDemo {
 
@@ -16,7 +16,7 @@ public class ShortUrlDemo {
     }
 
     /**
-     * 获取短连接网址
+     * 获取短链接
      */
     public String getShortUrl(String url) {
         long shortUrlSeed = jedis.incr("short_url_seed");

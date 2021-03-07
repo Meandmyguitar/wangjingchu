@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * 商品搜索案例
+ * 商品搜索案例 -反向索引
  */
 public class ProductSearchDemo {
 
@@ -15,8 +15,6 @@ public class ProductSearchDemo {
 
     /**
      * 添加商品的时候附带一些关键词
-     * @param productId
-     * @param keywords
      */
     public void addProduct(long productId, String[] keywords) {
         for(String keyword : keywords) {
@@ -26,8 +24,6 @@ public class ProductSearchDemo {
 
     /**
      * 根据多个关键词搜索商品
-     * @param keywords
-     * @return
      */
     public Set<String> searchProduct(String[] keywords) {
         List<String> keywordSetKeys = new ArrayList<String>();

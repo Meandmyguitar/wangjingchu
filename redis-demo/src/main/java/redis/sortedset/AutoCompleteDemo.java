@@ -41,8 +41,6 @@ public class AutoCompleteDemo {
 
     /**
      * 获取自动补全列表
-     * @param potentialKeyword
-     * @return
      */
     public Set<String> getAutoCompleteList(String potentialKeyword) {
         return jedis.zrevrange("potential_Keyword::" + potentialKeyword + "::keywords",
