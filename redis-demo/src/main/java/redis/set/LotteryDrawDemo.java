@@ -13,7 +13,6 @@ public class LotteryDrawDemo {
 
     /**
      * 添加抽奖候选人
-     * @param userId
      */
     public void addLotteryDrawCandidate(long userId, long lotteryDrawEventId) {
         jedis.sadd("lottery_draw_event::" + lotteryDrawEventId +"::candidates",
@@ -22,8 +21,6 @@ public class LotteryDrawDemo {
 
     /**
      * 实际进行抽奖
-     * @param lotteryDrawEventId
-     * @return
      */
     public List<String> doLotteryDraw(long lotteryDrawEventId, int count) {
         return jedis.srandmember("lottery_draw_event::" + lotteryDrawEventId +"::candidates", count);

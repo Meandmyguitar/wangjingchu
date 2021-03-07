@@ -17,15 +17,13 @@ public class ShortUrlDemo {
 
     /**
      * 获取短连接网址
-     * @param url
-     * @return
      */
     public String getShortUrl(String url) {
         long shortUrlSeed = jedis.incr("short_url_seed");
 
         StringBuffer buffer = new StringBuffer();
-        while(shortUrlSeed > 0) {
-            buffer.append(X36_ARRAY[(int)(shortUrlSeed % 36)]);
+        while (shortUrlSeed > 0) {
+            buffer.append(X36_ARRAY[(int) (shortUrlSeed % 36)]);
             shortUrlSeed = shortUrlSeed / 36;
         }
         String shortUrl = buffer.reverse().toString();
@@ -38,7 +36,6 @@ public class ShortUrlDemo {
 
     /**
      * 给短连接地址进行访问次数的增长
-     * @param shortUrl
      */
     public void incrementShortUrlAccessCount(String shortUrl) {
         jedis.hincrBy("short_url_access_count", shortUrl, 1);
@@ -46,7 +43,6 @@ public class ShortUrlDemo {
 
     /**
      * 获取短连接地址的访问次数
-     * @param shortUrl
      */
     public long getShortUrlAccessCount(String shortUrl) {
         return Long.valueOf(jedis.hget("short_url_access_count", shortUrl));
@@ -58,7 +54,7 @@ public class ShortUrlDemo {
         String shortUrl = demo.getShortUrl("http://redis.com/index.html");
         System.out.println("页面上展示的短链接地址为：" + shortUrl);
 
-        for(int i = 0; i < 152; i++) {
+        for (int i = 0; i < 152; i++) {
             demo.incrementShortUrlAccessCount(shortUrl);
         }
 

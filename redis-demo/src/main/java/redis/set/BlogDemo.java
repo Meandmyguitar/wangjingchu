@@ -13,7 +13,6 @@ public class BlogDemo {
 
     /**
      * 获取博客id
-     * @return
      */
     public long getBlogId() {
         return jedis.incr("blog_id_counter");
@@ -31,14 +30,11 @@ public class BlogDemo {
         jedis.hmset("article::" + id, blog);
         jedis.lpush("blog_list", String.valueOf(id));
         jedis.sadd("article::" + id + "::tags", tags);
-
         return true;
     }
 
     /**
      * 查看一篇博客
-     * @param id
-     * @return
      */
     public Map<String, String> findBlogById(long id) {
         Map<String, String> blog = jedis.hgetAll("article::" + id);
@@ -65,7 +61,6 @@ public class BlogDemo {
 
     /**
      * 对博客进行点赞
-     * @param id
      */
     public void incrementBlogLikeCount(long id) {
         jedis.hincrBy("article::" + id, "like_count", 1);
@@ -73,7 +68,6 @@ public class BlogDemo {
 
     /**
      * 增加博客浏览次数
-     * @param id
      */
     public void incrementBlogViewCount(long id) {
         jedis.hincrBy("article::" + id, "view_count", 1);
@@ -81,9 +75,6 @@ public class BlogDemo {
 
     /**
      * 分页查询博客
-     * @param pageNo
-     * @param pageSize
-     * @return
      */
     public List<String> findBlogByPage(int pageNo, int pageSize) {
         int startIndex = (pageNo - 1) * pageSize;
@@ -101,7 +92,7 @@ public class BlogDemo {
         blog.put("id", String.valueOf(id));
         blog.put("title", "我喜欢学习Redis");
         blog.put("content", "学习Redis是一件特别快乐的事情");
-        blog.put("author", "石杉");
+        blog.put("author", "wangzhengpeng");
         blog.put("time", "2020-01-01 10:00:00");
 
         demo.publishBlog(id, blog, new String[]{"中间件", "Redis", "缓存"});
@@ -113,15 +104,15 @@ public class BlogDemo {
 
         demo.updateBlog(id, updatedBlog);
 
-        // 构造20篇博客数据
-        for(int i = 0; i < 20; i++) {
+        // 构造2000篇博客数据
+        for(int i = 0; i < 1000000; i++) {
             id = demo.getBlogId();
 
-            blog = new HashMap<String, String>();
+            blog = new HashMap<>();
             blog.put("id", String.valueOf(id));
             blog.put("title", "第" + (i + 1) + "篇博客");
             blog.put("content", "学习第" + (i + 1) + "篇博客，是一件很有意思的事情");
-            blog.put("author", "石杉");
+            blog.put("author", "wangzhengpeng");
             blog.put("time", "2020-01-01 10:00:00");
 
             demo.publishBlog(id, blog, new String[]{"中间件", "Redis", "缓存"});

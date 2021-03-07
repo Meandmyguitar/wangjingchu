@@ -13,7 +13,6 @@ public class SendMailDemo {
 
     /**
      * 让发送邮件任务入队列
-     * @param sendMailTask
      */
     public void enqueueSendMailTask(String sendMailTask) {
         jedis.lpush("send_mail_task_queue", sendMailTask);
@@ -21,7 +20,6 @@ public class SendMailDemo {
 
     /**
      * 阻塞式获取发送邮件任务
-     * @return
      */
     public List<String> takeSendMailTask() {
         return jedis.brpop(5, "send_mail_task_queue");

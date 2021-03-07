@@ -15,7 +15,6 @@ public class TodoEventDemo {
 
     /**
      * 添加待办事项
-     * @param todoEvent
      */
     public void addTodoEvent(long userId, String todoEvent) {
         jedis.lpush("todo_event::" + userId, todoEvent);
@@ -23,10 +22,6 @@ public class TodoEventDemo {
 
     /**
      * 分页查询待办事项列表
-     * @param userId
-     * @param pageNo
-     * @param pageSize
-     * @return
      */
     public List<String> findTodoEventByPage(long userId, int pageNo, int pageSize) {
         int startIndex = (pageNo - 1) * pageSize;
@@ -37,18 +32,13 @@ public class TodoEventDemo {
     /**
      * 插入待办事项
      */
-    public void insertTodoEvent(long userId,
-                                ListPosition position,
-                                String targetTodoEvent,
-                                String todoEvent) {
+    public void insertTodoEvent(long userId, ListPosition position,
+                                String targetTodoEvent, String todoEvent) {
         jedis.linsert("todo_event::" + userId, position, targetTodoEvent, todoEvent);
     }
 
     /**
      * 修改一个待办事项
-     * @param userId
-     * @param index
-     * @param updatedTodoEvent
      */
     public void updateTodoEvent(long userId, int index, String updatedTodoEvent) {
         jedis.lset("todo_event::" + userId, index, updatedTodoEvent);
@@ -56,8 +46,6 @@ public class TodoEventDemo {
 
     /**
      * 完成一个待办事项
-     * @param userId
-     * @param todoEvent
      */
     public void finishTodoEvent(long userId, String todoEvent) {
         jedis.lrem("todo_event::" + userId, 0, todoEvent);
@@ -68,7 +56,7 @@ public class TodoEventDemo {
 
         // 添加20个待办事项
         long userId = 2;
-        for(int i = 0; i < 20; i++) {
+        for (int i = 0; i < 20; i++) {
             demo.addTodoEvent(userId, "第" + (i + 1) + "个待办事项");
         }
 
@@ -79,7 +67,7 @@ public class TodoEventDemo {
                 userId, pageNo, pageSize);
 
         System.out.println("第一次查询第一页待办事项......");
-        for(String todoEvent :todoEventPage) {
+        for (String todoEvent : todoEventPage) {
             System.out.println(todoEvent);
         }
 
@@ -97,7 +85,7 @@ public class TodoEventDemo {
                 userId, pageNo, pageSize);
 
         System.out.println("第二次查询第一页待办事项......");
-        for(String todoEvent :todoEventPage) {
+        for (String todoEvent : todoEventPage) {
             System.out.println(todoEvent);
         }
 
@@ -113,7 +101,7 @@ public class TodoEventDemo {
                 userId, pageNo, pageSize);
 
         System.out.println("第三次查询第一页待办事项......");
-        for(String todoEvent :todoEventPage) {
+        for (String todoEvent : todoEventPage) {
             System.out.println(todoEvent);
         }
     }

@@ -14,7 +14,6 @@ public class BlogDemo {
 
     /**
      * 获取博客id
-     * @return
      */
     public long getBlogId() {
         return jedis.incr("blog_id_counter");
@@ -28,16 +27,12 @@ public class BlogDemo {
             return false;
         }
         blog.put("content_length", String.valueOf(blog.get("content").length()));
-
         jedis.hmset("article::" + id, blog);
-
         return true;
     }
 
     /**
      * 查看一篇博客
-     * @param id
-     * @return
      */
     public Map<String, String> findBlogById(long id) {
         Map<String, String> blog = jedis.hgetAll("article::" + id);
@@ -53,13 +48,11 @@ public class BlogDemo {
         if(updatedContent != null && !"".equals(updatedContent)) {
             updatedBlog.put("content_length", String.valueOf(updatedContent.length()));
         }
-
         jedis.hmset("article::" + id, updatedBlog);
     }
 
     /**
      * 对博客进行点赞
-     * @param id
      */
     public void incrementBlogLikeCount(long id) {
         jedis.hincrBy("article::" + id, "like_count", 1);
@@ -67,7 +60,6 @@ public class BlogDemo {
 
     /**
      * 增加博客浏览次数
-     * @param id
      */
     public void incrementBlogViewCount(long id) {
         jedis.hincrBy("article::" + id, "view_count", 1);
@@ -76,20 +68,20 @@ public class BlogDemo {
     public static void main(String[] args) {
         BlogDemo demo = new BlogDemo();
 
-        // 发表一篇博客
+        // 发表一篇博客 - 获取博客ID
         long id = demo.getBlogId();
 
         Map<String, String> blog = new HashMap<String, String>();
         blog.put("id", String.valueOf(id));
         blog.put("title", "我喜欢学习Redis");
         blog.put("content", "学习Redis是一件特别快乐的事情");
-        blog.put("author", "石杉");
+        blog.put("author", "wangzhengpeng");
         blog.put("time", "2020-01-01 10:00:00");
 
         demo.publishBlog(id, blog);
 
         // 更新一篇博客
-        Map<String, String> updatedBlog = new HashMap<String, String>();
+        Map<String, String> updatedBlog = new HashMap<>();
         updatedBlog.put("title", "我特别的喜欢学习Redis");
         updatedBlog.put("content", "我平时喜欢到官方网站上去学习Redis");
 
@@ -98,6 +90,7 @@ public class BlogDemo {
         // 有别人点击进去查看你的博客的详细内容，并且进行点赞
         Map<String, String> blogResult = demo.findBlogById(id);
         System.out.println("查看博客的详细内容：" + blogResult);
+        demo.incrementBlogLikeCount(id);
         demo.incrementBlogLikeCount(id);
 
         // 你自己去查看自己的博客，看看浏览次数和点赞次数

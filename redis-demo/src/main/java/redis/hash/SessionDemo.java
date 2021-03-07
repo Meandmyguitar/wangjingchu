@@ -17,35 +17,28 @@ public class SessionDemo {
 
     /**
      * 检查session是否有效
-     * @return
      */
     public boolean isSessionValid(String token) throws Exception {
         // 校验token是否为空
-        if(token == null || "".equals(token)) {
+        if (token == null || "".equals(token)) {
             return false;
         }
 
         // 这里拿到的session可能就是一个json字符串
-        // 我们这里简化一下，就放一个用户user_id作为这里的value
         String session = jedis.hget("sessions", "session::" + token);
-        if(session == null || "".equals(session)) {
+        if (session == null || "".equals(session)) {
             return false;
         }
 
         // 检查一下这个session是否在有效期内
-        String expireTime = jedis.hget("sessions::expire_time",
-                "session::" + token);
-        if(expireTime == null || "".equals(expireTime)) {
+        String expireTime = jedis.hget("sessions::expire_time", "session::" + token);
+        if (expireTime == null || "".equals(expireTime)) {
             return false;
         }
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat(
-                "yyyy-MM-dd HH:mm:ss");
-        Date expireTimeDate = dateFormat.parse(expireTime);
+        Date expireTimeDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(expireTime);
 
-        Date now = new Date();
-
-        if(now.after(expireTimeDate)) {
+        if (new Date().after(expireTimeDate)) {
             return false;
         }
 
@@ -56,41 +49,21 @@ public class SessionDemo {
 
     /**
      * 模拟的登录方法
-     * @param username
-     * @param password
-     * @return
      */
     public String login(String username, String password) {
-        // 基于用户名和密码去登录
         System.out.println("基于用户名和密码登录：" + username + ", " + password);
-        Random random = new Random();
-        long userId = random.nextInt() * 100;
-        // 登录成功之后，生成一块令牌
+        long userId = new Random().nextInt() * 100;
         String token = UUID.randomUUID().toString().replace("-", "");
-        // 基于令牌和用户id去初始化用户的session
-        initSession(userId, token);
-        // 返回这个令牌给用户
-        return token;
-    }
-
-    /**
-     * 用户登录成功之后，初始化一个session
-     * @param userId
-     * @param token
-     */
-    public void initSession(long userId, String token) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat(
-                "yyyy-MM-dd HH:mm:ss");
 
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new Date());
         calendar.add(Calendar.HOUR, 24);
         Date expireTime = calendar.getTime();
 
-        jedis.hset("sessions",
-                "session::" + token, String.valueOf(userId));
-        jedis.hset("sessions::expire_time",
-                "session::" + token, dateFormat.format(expireTime));
+        jedis.hset("sessions", "session::" + token, String.valueOf(userId));
+        jedis.hset("sessions::expire_time", "session::" + token,
+                new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(expireTime));
+        return token;
     }
 
     public static void main(String[] args) throws Exception {
@@ -101,7 +74,7 @@ public class SessionDemo {
         System.out.println("第一次访问系统的session校验结果：" + (isSessionValid == true ? "通过" : "不通过"));
 
         // 强制性进行登录，获取到token
-        String token = demo.login("zhangsan","123456");
+        String token = demo.login("zhangsan", "123456");
         System.out.println("登陆过后拿到令牌：" + token);
 
         // 第二次再次访问系统，此时是可以访问的

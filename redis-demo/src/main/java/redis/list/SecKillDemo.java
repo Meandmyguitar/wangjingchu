@@ -11,7 +11,6 @@ public class SecKillDemo {
 
     /**
      * 秒杀抢购请求入队
-     * @param secKillRequest
      */
     public void enqueueSecKillRequest(String secKillRequest) {
         jedis.lpush("sec_kill_request_queue", secKillRequest);

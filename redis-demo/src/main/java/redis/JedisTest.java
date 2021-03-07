@@ -34,7 +34,7 @@ public class JedisTest {
         // 博客的发布、修改与查看
         Long publishBlogResult = jedis.msetnx("article:1:title", "学习Redis",
                 "article:1:content", "如何学好redis的使用",
-                "article:1:author", "中华石杉",
+                "article:1:author", "wangzhengpeng",
                 "article:1:time", "2020-01-01 00:00:00");
         System.out.println("发布博客的结果：" + publishBlogResult);
 
