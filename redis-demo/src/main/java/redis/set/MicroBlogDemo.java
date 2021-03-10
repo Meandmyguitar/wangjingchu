@@ -2,6 +2,7 @@ package redis.set;
 
 import redis.clients.jedis.Jedis;
 
+import java.util.Random;
 import java.util.Set;
 
 /**
@@ -13,8 +14,6 @@ public class MicroBlogDemo {
 
     /**
      * 关注别人
-     * @param userId
-     * @param followUserId
      */
     public void follow(long userId, long followUserId) {
         jedis.sadd("user::" + followUserId + "::followers", String.valueOf(userId));
@@ -23,8 +22,6 @@ public class MicroBlogDemo {
 
     /**
      * 取消关注别人
-     * @param userId
-     * @param followUserId
      */
     public void unfollow(long userId, long followUserId) {
         jedis.srem("user::" + followUserId + "::followers", String.valueOf(userId));
@@ -33,8 +30,6 @@ public class MicroBlogDemo {
 
     /**
      * 查看有哪些人关注了自己
-     * @param userId
-     * @return
      */
     public Set<String> getFollowers(long userId) {
         return jedis.smembers("user::" + userId + "::followers");
@@ -42,8 +37,6 @@ public class MicroBlogDemo {
 
     /**
      * 查看关注了自己的人数
-     * @param userId
-     * @return
      */
     public long getFollowersCount(long userId) {
         return jedis.scard("user::" + userId + "::followers");
@@ -51,8 +44,6 @@ public class MicroBlogDemo {
 
     /**
      * 查看自己关注了哪些人
-     * @param userId
-     * @return
      */
     public Set<String> getFollowUsers(long userId) {
         return jedis.smembers("user::" + userId + "::follow_users");
@@ -60,8 +51,6 @@ public class MicroBlogDemo {
 
     /**
      * 查看自己关注的人数
-     * @param userId
-     * @return
      */
     public long getFollowUsersCount(long userId) {
         return jedis.scard("user::" + userId + "::follow_users");
@@ -69,9 +58,6 @@ public class MicroBlogDemo {
 
     /**
      * 获取用户跟其他用户之间共同关注的人有哪些
-     * @param userId
-     * @param otherUserId
-     * @return
      */
     public Set<String> getSameFollowUsers(long userId, long otherUserId) {
         return jedis.sinter("user::" + userId + "::follow_users",
@@ -81,17 +67,58 @@ public class MicroBlogDemo {
     /**
      * 获取给我推荐的可关注人
      * 我关注的某个好友关注的一些人，我没关注那些人，此时推荐那些人给我
-     * @param userId
-     * @return
      */
     public Set<String> getRecommendFollowUsers(long userId, long otherUserId) {
         return jedis.sdiff("user::" + otherUserId + "::follow_users",
                 "user::" + userId + "::follow_users");
     }
 
-    public static void main(String[] args) throws Exception {
-        MicroBlogDemo demo = new MicroBlogDemo();
+    /**
+     * 查找bigkeys
+     *
+     * wangzhengpeng@wangzhengpengdeMacBook-Pro bin % redis-cli --bigkeys
+     *
+     * # Scanning the entire keyspace to find biggest keys as well as
+     * # average sizes per key type.  You can use -i 0.1 to sleep 0.1 sec
+     * # per 100 SCAN commands (not usually needed).
+     *
+     * [00.00%] Biggest set    found so far '"user::130::follow_users"' with 98460 members
+     * [00.00%] Biggest set    found so far '"user::110::follow_users"' with 4529866 members
+     *
+     * -------- summary -------
+     *
+     * Sampled 3 keys in the keyspace!
+     * Total key length in bytes is 69 (avg len 23.00)
+     *
+     * Biggest    set found '"user::110::follow_users"' has 4529866 members
+     *
+     * 0 lists with 0 items (00.00% of keys, avg size 0.00)
+     * 0 hashs with 0 fields (00.00% of keys, avg size 0.00)
+     * 0 strings with 0 bytes (00.00% of keys, avg size 0.00)
+     * 0 streams with 0 entries (00.00% of keys, avg size 0.00)
+     * 3 sets with 4727816 members (100.00% of keys, avg size 1575938.67)
+     * 0 zsets with 0 members (00.00% of keys, avg size 0.00)
+     * wangzhengpeng@wangzhengpengdeMacBook-Pro bin %
+     */
 
+    public static void main(String[] args) throws Exception {
+//        long startTime = System.currentTimeMillis();
+        MicroBlogDemo demo = new MicroBlogDemo();
+//        for (int i = 0; i < 1000 * 10000; i++) {
+//            demo.follow(110L, new Random().nextInt(10000000));
+//        }
+
+//        for (int i = 0; i < 500 * 10000; i++) {
+//            demo.follow(120L, new Random().nextInt(10000000));
+//        }
+//        Set<String> recommendFollowUsers = demo.getRecommendFollowUsers(110, 120);
+//        System.out.println("sinter size "+recommendFollowUsers.size());
+//
+//        for (String recommendFollowUser : recommendFollowUsers) {
+//            demo.follow(130L, Long.parseLong(recommendFollowUser));
+//        }
+
+//        System.out.println(System.currentTimeMillis() - startTime);
         // 定义用户id
         long userId = 31;
         long friendId = 32;
