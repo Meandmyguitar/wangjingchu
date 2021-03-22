@@ -2,6 +2,7 @@ package com.distributed.lock.redis;
 
 import com.distributed.lock.redis.pojo.DistributedLockSupport;
 import com.distributed.lock.redis.pojo.LockContext;
+import com.distributed.lock.redis.pojo.LockResource;
 import com.distributed.lock.redis.pojo.LockResult;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;

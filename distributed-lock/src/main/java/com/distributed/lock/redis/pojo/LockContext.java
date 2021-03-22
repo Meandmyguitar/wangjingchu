@@ -6,6 +6,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * 锁上线文信息
+ *
  * @author wangzhengpeng
  */
 public class LockContext {

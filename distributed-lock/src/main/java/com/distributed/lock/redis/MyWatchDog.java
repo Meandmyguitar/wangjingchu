@@ -1,6 +1,6 @@
 package com.distributed.lock.redis;
 
-import com.distributed.lock.redis.pojo.DistributedLockSupport;
+import com.distributed.lock.redis.pojo.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -7,6 +7,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * 分布式锁
+ *
  * @author wangzhengpeng
  */
 public interface RedisDistributedLock {

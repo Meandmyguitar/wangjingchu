@@ -1,7 +1,7 @@
 package com.distributed.lock.redis.pojo;
 
 import com.alibaba.fastjson.JSON;
-import com.peppa.file.distribute.RedisDistributedLockManager;
+import com.distributed.lock.redis.RedisDistributedLockManager;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
