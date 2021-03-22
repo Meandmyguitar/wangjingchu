@@ -17,11 +17,6 @@ public class DelBigKey {
 
     /**
      * 1. Hash删除: hscan + hdel
-     *
-     * @param host
-     * @param port
-     * @param password
-     * @param bigHashKey
      */
     public void delBigHash(String host, int port, String password, String bigHashKey) {
         Jedis jedis = new Jedis(host, port);
@@ -113,5 +108,13 @@ public class DelBigKey {
 
         //删除bigkey
         jedis.del(bigZsetKey);
+    }
+
+    /**
+     * unlink
+     */
+    public void unlink(String host, int port, String[] keys) {
+        Jedis jedis = new Jedis(host, port);
+        jedis.unlink(keys);
     }
 }
