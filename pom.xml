@@ -13,6 +13,7 @@
     <modules>
         <module>redis-demo</module>
         <module>distributed-lock</module>
+        <module>multi-tool</module>
     </modules>
 
     <properties>
