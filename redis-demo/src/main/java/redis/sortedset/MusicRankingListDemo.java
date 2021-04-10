@@ -14,9 +14,11 @@ public class MusicRankingListDemo {
 
     /**
      * 把新的音乐加入到排行榜里去
+     *
+     * @return
      */
-    public void addSong(long songId) {
-        jedis.zadd("music_ranking_list", 0, String.valueOf(songId));
+    public Long addSong(long songId) {
+        return jedis.zadd("music_ranking_list", 1, String.valueOf(songId));
     }
 
     /**
@@ -30,7 +32,7 @@ public class MusicRankingListDemo {
      * 获取歌曲在排行榜里的排名
      */
     public long getSongRank(long songId) {
-        return jedis.zinterstore("music_ranking_list", String.valueOf(songId));
+        return jedis.zrevrank("music_ranking_list", String.valueOf(songId));
     }
 
     /**
@@ -56,6 +58,9 @@ public class MusicRankingListDemo {
 
         Set<Tuple> musicRankingList = demo.getMusicRankingList();
         System.out.println("查看音乐排行榜排名前3个的歌曲：" + musicRankingList);
+        for (Tuple tuple : musicRankingList) {
+            System.out.println(tuple.getElement() + ":" + tuple.getScore());
+        }
     }
 
 }
