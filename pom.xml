@@ -14,6 +14,7 @@
         <module>redis-demo</module>
         <module>distributed-lock</module>
         <module>multi-tool</module>
+        <module>java-function</module>
     </modules>
 
     <properties>

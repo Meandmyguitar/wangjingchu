@@ -32,6 +32,8 @@ public class MusicRankingListDemo {
      * 获取歌曲在排行榜里的排名
      */
     public long getSongRank(long songId) {
+        Long music_ranking_list = jedis.zcard("music_ranking_list");
+        System.out.println("card="+music_ranking_list);
         return jedis.zrevrank("music_ranking_list", String.valueOf(songId));
     }
 
@@ -39,7 +41,7 @@ public class MusicRankingListDemo {
      * 获取音乐排行榜
      */
     public Set<Tuple> getMusicRankingList() {
-        return jedis.zrevrangeWithScores("music_ranking_list", 0, 2);
+        return jedis.zrevrangeWithScores("music_ranking_list", 0, -1);
     }
 
     public static void main(String[] args) throws Exception {
