@@ -15,11 +15,14 @@
         <module>distributed-lock</module>
         <module>multi-tool</module>
         <module>java-function</module>
+        <module>my-spring</module>
+
     </modules>
 
     <properties>
-        <java.version>1.8</java.version>
-        <spring-cloud.version>Greenwich.SR2</spring-cloud.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
 
 
